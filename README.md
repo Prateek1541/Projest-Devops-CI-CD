@@ -146,7 +146,8 @@ Every push to the `main` branch triggers automatic deployment.
 Example:
 
 ```
-http://<EC2_PUBLIC_IP>:8080
+https://hub.docker.com/r/imprateek08/cicd-app (for seeing versions)
+http://<EC2_PUBLIC_IP>:8080 (public access of project)
 ```
 
 ---
