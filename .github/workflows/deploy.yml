@@ -32,5 +32,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             docker pull imprateek08/cicd-app:latest
-            docker rm -f cicd-app || true
-            docker run -d --name cicd-app -p 8080:8080 imprateek08/cicd-app:latest
+            docker run -d --name cicd-app-new -p 8081:8080 imprateek08/cicd-app:latest
+            docker stop cicd-app || true
+            docker rm cicd-app || true
+            docker rename cicd-app-new cicd-app
