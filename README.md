@@ -6,13 +6,16 @@
 
 This project demonstrates a **complete CI/CD pipeline** that automatically builds and deploys a containerized Node.js application using **GitHub Actions, Docker, Docker Hub, and AWS EC2**.
 
-Whenever new code is pushed to the repository, the pipeline automatically:
+## ⚙️ CI/CD Pipeline Workflow
 
-1. Builds a Docker image
-2. Pushes the image to Docker Hub
-3. Connects to the AWS EC2 server
-4. Pulls the latest Docker image
-5. Deploys the updated container
+The automated pipeline performs the following steps whenever code is pushed to the `main` branch:
+
+1. Build a Docker image for the Node.js application
+2. Tag the image with a **version number**
+3. Push the image to Docker Hub
+4. Connect to the AWS EC2 server
+5. Pull the latest image version
+6. Deploy the updated container automatically
 
 This eliminates manual deployment and ensures continuous delivery.
 
@@ -36,6 +39,40 @@ The deployment process follows this automated pipeline:
 Developer pushes code → GitHub Repository → GitHub Actions CI/CD → Build Docker Image → Push to Docker Hub → SSH to AWS EC2 → Pull Image → Run Docker Container → Application Updated
 
 ---
+## 🐳 Docker Image Versioning
+
+This project uses **versioned Docker images** instead of relying only on the `latest` tag.
+
+Each CI/CD pipeline run automatically creates a new Docker image version using the GitHub workflow run number.
+
+Example image tags:
+
+```
+imprateek08/cicd-app:15
+imprateek08/cicd-app:16
+imprateek08/cicd-app:17
+```
+
+The `latest` tag always points to the most recent build, while numbered tags provide **stable version snapshots**.
+
+### Why versioned images are useful
+
+* Enables **rollback to a previous stable version**
+* Provides **traceability for deployments**
+* Prevents issues caused by overwriting the `latest` image
+* Follows **industry DevOps best practices**
+
+### Example rollback
+
+If the newest deployment fails, the previous version can be deployed easily:
+
+```
+docker pull imprateek08/cicd-app:15
+docker run -d -p 8080:8080 imprateek08/cicd-app:15
+```
+
+This ensures quick recovery during production deployments.
+
 
 ## 🏗 Architecture
 
