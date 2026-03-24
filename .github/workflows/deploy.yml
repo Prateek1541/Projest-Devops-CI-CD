@@ -25,4 +25,4 @@ jobs:
             docker stop cicd-app || true
             docker rm cicd-app || true
             docker build -t cicd-app .
-            docker run -d -p 8080:8080 cicd-app
+            docker run -d --name cicd-app -p 8080:8080 cicd-app
