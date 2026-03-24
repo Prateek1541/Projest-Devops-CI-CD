@@ -21,8 +21,8 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t imprateek08/cicd-app:latest .
-          docker push imprateek08/cicd-app:latest
+          docker build -t imprateek08/cicd-app:${{ github.run_number }} .
+          docker push imprateek08/cicd-app:${{ github.run_number }}
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.3
@@ -31,6 +31,6 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            ocker pull imprateek08/cicd-app:latest
+            docker pull imprateek08/cicd-app:${{ github.run_number }}
             docker rm -f cicd-app || true
-            docker run -d --name cicd-app -p 8080:8080 imprateek08/cicd-app:latest
+            docker run -d --name cicd-app -p 8080:8080 imprateek08/cicd-app:${{ github.run_number }}
