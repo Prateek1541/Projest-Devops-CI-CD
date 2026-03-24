@@ -22,7 +22,6 @@ jobs:
           script: |
             cd Projest-Devops-CI-CD
             git pull origin main
-            docker ps -q --filter "publish=8080" | xargs -r docker stop
-            docker ps -aq --filter "publish=8080" | xargs -r docker rm
+            docker rm -f cicd-app || true
             docker build -t cicd-app .
             docker run -d --name cicd-app -p 8080:8080 cicd-app
