@@ -1,94 +1,80 @@
-const board = document.getElementById("board");
-const status = document.getElementById("status");
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
 
-let cells = [];
-let gameState = ["","","","","","","","",""];
-let gameActive = true;
+const grid = 20;
 
-function createBoard(){
+let snake = [{x:200,y:200}];
+let dx = grid;
+let dy = 0;
 
-  board.innerHTML="";
-  cells=[];
+let food = {
+  x: Math.floor(Math.random()*20)*grid,
+  y: Math.floor(Math.random()*20)*grid
+};
 
-  for(let i=0;i<9;i++){
+let score = 0;
 
-    const cell=document.createElement("div");
+function gameLoop(){
 
-    cell.classList.add("cell");
+  ctx.clearRect(0,0,400,400);
 
-    cell.dataset.index=i;
+  const head = {x:snake[0].x+dx, y:snake[0].y+dy};
 
-    cell.addEventListener("click",handleMove);
+  snake.unshift(head);
 
-    board.appendChild(cell);
+  if(head.x===food.x && head.y===food.y){
 
-    cells.push(cell);
+    score++;
+    document.getElementById("score").innerText="Score: "+score;
+
+    food={
+      x: Math.floor(Math.random()*20)*grid,
+      y: Math.floor(Math.random()*20)*grid
+    };
+
+  }else{
+    snake.pop();
   }
 
+  ctx.fillStyle="red";
+  ctx.fillRect(food.x,food.y,grid,grid);
+
+  ctx.fillStyle="lime";
+
+  snake.forEach(part=>{
+    ctx.fillRect(part.x,part.y,grid,grid);
+  });
+
 }
 
-function handleMove(e){
+document.addEventListener("keydown", e=>{
 
-  const index=e.target.dataset.index;
-
-  if(gameState[index]!=="" || !gameActive) return;
-
-  gameState[index]="X";
-
-  e.target.innerText="X";
-
-  if(checkWinner("X")){
-    status.innerText="You win 🎉";
-    gameActive=false;
-    return;
+  if(e.key==="ArrowUp" && dy===0){
+    dx=0; dy=-grid;
   }
 
-  aiMove();
-
-}
-
-function aiMove(){
-
-  const empty = gameState
-    .map((v,i)=>v===""?i:null)
-    .filter(v=>v!==null);
-
-  if(empty.length===0) return;
-
-  const move = empty[Math.floor(Math.random()*empty.length)];
-
-  gameState[move]="O";
-
-  cells[move].innerText="O";
-
-  if(checkWinner("O")){
-    status.innerText="AI wins 🤖";
-    gameActive=false;
+  if(e.key==="ArrowDown" && dy===0){
+    dx=0; dy=grid;
   }
 
-}
+  if(e.key==="ArrowLeft" && dx===0){
+    dx=-grid; dy=0;
+  }
 
-function checkWinner(player){
+  if(e.key==="ArrowRight" && dx===0){
+    dx=grid; dy=0;
+  }
 
-  const winCombos=[
-    [0,1,2],[3,4,5],[6,7,8],
-    [0,3,6],[1,4,7],[2,5,8],
-    [0,4,8],[2,4,6]
-  ];
-
-  return winCombos.some(combo =>
-    combo.every(i=>gameState[i]===player)
-  );
-
-}
+});
 
 function restartGame(){
 
-  gameState=["","","","","","","","",""];
-  gameActive=true;
-  status.innerText="";
-  createBoard();
+  snake=[{x:200,y:200}];
+  dx=grid;
+  dy=0;
+  score=0;
+  document.getElementById("score").innerText="Score: 0";
 
 }
 
-createBoard();
+setInterval(gameLoop,100);
