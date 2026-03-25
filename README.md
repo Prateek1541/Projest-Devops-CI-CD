@@ -147,7 +147,7 @@ Example:
 
 ```
 https://hub.docker.com/r/imprateek08/cicd-app (for seeing versions)
-http://<EC2_PUBLIC_IP>:8080 (public access of project)
+http://3.111.157.176:8080 (public access of project)
 ```
 
 ---
