@@ -1,34 +1,94 @@
-async function submitGuess(){
+const board = document.getElementById("board");
+const status = document.getElementById("status");
 
-  const guess = document.getElementById("guessInput").value;
+let cells = [];
+let gameState = ["","","","","","","","",""];
+let gameActive = true;
 
-  const response = await fetch("/guess", {
+function createBoard(){
 
-    method: "POST",
+  board.innerHTML="";
+  cells=[];
 
-    headers:{
-      "Content-Type":"application/json"
-    },
+  for(let i=0;i<9;i++){
 
-    body: JSON.stringify({
-      guess:Number(guess)
-    })
-  });
+    const cell=document.createElement("div");
 
-  const data = await response.json();
+    cell.classList.add("cell");
 
-  let message="";
+    cell.dataset.index=i;
 
-  if(data.result==="correct"){
-    message="🎉 Correct! New number generated.";
+    cell.addEventListener("click",handleMove);
+
+    board.appendChild(cell);
+
+    cells.push(cell);
   }
-  else if(data.result==="higher"){
-    message="📈 Try Higher!";
-  }
-  else{
-    message="📉 Try Lower!";
-  }
-
-  document.getElementById("result").innerText = message;
 
 }
+
+function handleMove(e){
+
+  const index=e.target.dataset.index;
+
+  if(gameState[index]!=="" || !gameActive) return;
+
+  gameState[index]="X";
+
+  e.target.innerText="X";
+
+  if(checkWinner("X")){
+    status.innerText="You win 🎉";
+    gameActive=false;
+    return;
+  }
+
+  aiMove();
+
+}
+
+function aiMove(){
+
+  const empty = gameState
+    .map((v,i)=>v===""?i:null)
+    .filter(v=>v!==null);
+
+  if(empty.length===0) return;
+
+  const move = empty[Math.floor(Math.random()*empty.length)];
+
+  gameState[move]="O";
+
+  cells[move].innerText="O";
+
+  if(checkWinner("O")){
+    status.innerText="AI wins 🤖";
+    gameActive=false;
+  }
+
+}
+
+function checkWinner(player){
+
+  const winCombos=[
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
+  ];
+
+  return winCombos.some(combo =>
+    combo.every(i=>gameState[i]===player)
+  );
+
+}
+
+function restartGame(){
+
+  gameState=["","","","","","","","",""];
+  gameActive=true;
+  status.innerText="";
+  createBoard();
+
+}
+
+createBoard();
