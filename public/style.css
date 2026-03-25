@@ -1,75 +1,75 @@
 body{
 
-  margin:0;
-  overflow:hidden;   /* prevents page scrolling */
+margin:0;
+overflow:hidden;
 
-  font-family:Arial;
+font-family:Arial;
 
-  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
 
-  height:100vh;
+height:100vh;
 
-  display:flex;
-  justify-content:center;
-  align-items:center;
+display:flex;
+justify-content:center;
+align-items:center;
 
 }
 
 .container{
 
-  text-align:center;
-  color:white;
+text-align:center;
+color:white;
 
 }
 
 canvas{
 
-  background:black;
+background:black;
 
-  border:3px solid #00ff88;
+border:3px solid #00ff88;
 
-  border-radius:10px;
+border-radius:10px;
 
-  box-shadow:
-  0 0 15px #00ff88,
-  0 0 40px #00ff88;
+box-shadow:
+0 0 15px #00ff88,
+0 0 40px #00ff88;
 
 }
 
 button{
 
-  padding:10px 20px;
-  margin-top:10px;
+padding:10px 20px;
+margin-top:10px;
 
-  border:none;
-  border-radius:8px;
+border:none;
+border-radius:8px;
 
-  background:#00ff88;
-  color:black;
+background:#00ff88;
+color:black;
 
-  font-size:16px;
+font-size:16px;
 
-  cursor:pointer;
+cursor:pointer;
 
 }
 
 button:hover{
 
-  transform:scale(1.05);
+transform:scale(1.05);
 
 }
 
 .instructions{
 
-  margin-top:10px;
-  font-size:14px;
+margin-top:10px;
+font-size:14px;
 
 }
 
 #gameOver{
 
-  font-size:22px;
-  color:red;
-  font-weight:bold;
+font-size:22px;
+color:red;
+font-weight:bold;
 
 }
